@@ -21,7 +21,8 @@ function init(){
                 .attr("fill", "grey");
 
     // https://gist.github.com/piwodlaiwo/3734a1357696dcff203a94012646e932
-    
+    // try load CSV
+
     // LOAD JSON
     /*
     d3.json("LGA_VIC.json").then(function(json) {
