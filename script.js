@@ -5,8 +5,8 @@ function init(){
 
     //Get map 
     var projection = d3.geoMercator()
-                    .translate([480, 300])
-                    .scale(200);
+                    .translate([610, 340])
+                    .scale(220);
 
     //Declare the geopath as SVG PATH
     var path = d3.geoPath()
@@ -40,5 +40,14 @@ function init(){
             .attr("fill", "grey");
     });
 }
+
+/*
+TODO:
+- Mouse hover change country color (to see how hovering is with the blocky "p" element)
+- Match Countries name and hover to display data
+- Choropleths
+- Display scale to show color (and its data) ??
+- Button for each years
+*/
 
 window.onload = init;
