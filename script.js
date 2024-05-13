@@ -3,10 +3,9 @@ function init(){
     var w = "150%";
     var h = 600;
 
-    //Get map to focus on Victoria
+    //Get map 
     var projection = d3.geoMercator()
-                    //.center([145, -36.5])
-                    //.translate([w / 2, h / 2])
+                    .translate([480, 300])
                     .scale(200);
 
     //Declare the geopath as SVG PATH
@@ -20,32 +19,26 @@ function init(){
                 .attr("height", h)
 
     // https://gist.github.com/piwodlaiwo/3734a1357696dcff203a94012646e932
+    // https://en.wikipedia.org/wiki/ISO_3166-1_numeric
 
-    // try load CSV it works
-    /*
-    d3.csv("data.csv").then(function(data){
-        console.log(data);
-    })
-    */
+    d3.json("countries-110m.json", function(error, world) {
+        
+        // LOAD HEALTH EXPENDITURE DATA CSV
+        d3.csv("data.csv", function(data){
+            console.log(data);
+        });
 
-    d3.json("https://unpkg.com/world-atlas@1/world/110m.json", function(error, world) {
-  if (error) throw error;
-  svg.selectAll("path")
-     .data(topojson.feature(world,world.objects.countries).features)
-     .enter().append("path")
-     .attr("d", path);
-});
+        // CHECK GEOJSON LOAD ERROR
+        if (error) throw error;
 
-    // LOAD JSON
-    /*
-    d3.json("LGA_VIC.json").then(function(json) {
+        // GEOJSON LOAD SUCCESS
         svg.selectAll("path")
-            .data(json.features)
+            .data(topojson.feature(world,world.objects.countries).features)
             .enter()
             .append("path")
-            .attr("d", path);
-    })
-    */
+            .attr("d", path)
+            .attr("fill", "grey");
+    });
 }
 
 window.onload = init;
