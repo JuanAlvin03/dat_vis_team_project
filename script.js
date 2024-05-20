@@ -6,7 +6,7 @@ function init(){
     //Get map 
     var projection = d3.geoMercator()
                     .translate([610, 350])
-                    .scale(220);
+                    .scale(210);
 
     //Declare the geopath as SVG PATH
     var path = d3.geoPath()
@@ -50,7 +50,12 @@ function init(){
         // LOAD HEALTH EXPENDITURE DATA CSV
         d3.csv("data.csv", function(data){
             
-            
+            /*
+            color.domain([
+                d3.min(data, function(d) { return d.value; }),  
+                d3.max(data, function(d) { return d.value; })
+            ])
+            */
 
             for (let i = 0; i < data.length; i++) 
             {
@@ -125,7 +130,7 @@ function init(){
                 }
             }
 
-            console.log(healthData);
+            //console.log(healthData);
             
             // CHECK GEOJSON LOAD ERROR
             if (error) throw error;
@@ -145,11 +150,12 @@ function init(){
                         return data2015[i].value;
                     }
                 }
-                return "Data not Found";
+                return "No Data";
             }
 
             // https://d3-graph-gallery.com/graph/density_slider.html
 
+            var tooltip = d3.select("#tooltip");
 
             // GEOJSON LOAD SUCCESS
             svg.selectAll("path")
@@ -158,36 +164,97 @@ function init(){
                 .append("path")
                 .attr("d", path)
                 .attr("fill", "grey")
+                /*
+                .style("fill", function(d) {
+                    
+                    var value = d.properties.value;
+                
+                    if(value){
+                        return color(value); // use the color based on the data
+                    } else {
+                        return "#ccc" // if there is no value
+                    }
+                })
+                */
                 .each(function(d){
+                    /*
                     d3.select(this)
                         .append("span")
                         .attr("class", "popuptext");
+                    */
 
+                    /*
                     d3.select(this)
                         .selectAll("span")
                         .text(d.properties.name + " " + findDataByCountryName(d.properties.name));
+                    */
 
-                    
+                   /*
+
+                    d3.select(this)
+                        .append("div")
+                            .style("width", 400)
+                            .style("height", 400)
+                            .style("position", "absolute")
+                            .style("visibility", "visible")
+                            .style("background-color", "black")
+                            .style("border", "solid")
+                            .style("border-width", "1px")
+                            .style("border-radius", "5px")
+                            .style("padding", "10px")
+                            .html("<p>" + d.properties.name + " : " + findDataByCountryName(d.properties.name) + "</p>");
+                    */
+
+
+                    //var tooltip = d3.select(this)
+                        
                 })
-                .on("mouseover", function(event, d) { // effect when mouse over
+                .on("mouseover", function(d) { // effect when mouse over
                     // change path color to orange
+                    
                     d3.select(this)
                         .attr("fill", "orange")
 
+                    var value = findDataByCountryName(d.properties.name);
+                    tooltip.style("visibility", "visible")
+                           .html("<strong>Country:</strong> " + d.properties.name + "<br><strong>Year:</strong> 2015<br><strong>Value:</strong> " + value);
+                    
+                    /*
+                    var hoveredDiv = d3.select(this).select("div");
+
+                    return hoveredDiv.style("visibility", "visible");
+                    */
+
+
+                    /*
                     var hovered = d3.select(this)
                                     .select(".popuptext");
 
                     //https://d3-graph-gallery.com/graph/interactivity_tooltip.html
 
-                    hovered._groups[0][0].classList.toggle("show");           
+                    hovered._groups[0][0].classList.toggle("show");      
+                    */     
+
+                })
+                .on("mousemove", function(event) {
+                    tooltip.style("top", (event.pageY - 10) + "px")
+                           .style("left", (event.pageX + 10) + "px");
                 })
                 .on("mouseout", function () { // effect when mouse move, not over anymore
                     //change bar to original color
                     d3.select(this) 
                         .attr("fill", "grey"); 
 
+                    tooltip.style("visibility", "hidden");
+                    
+                    /*
+                    var hoveredDiv = d3.select(this).select("div");
+
+                    return hoveredDiv.style("visibility", "hidden");
+                    */
+                    
                     //remove text
-                    d3.select("#tooltip").remove();
+                    //d3.select("#tooltip").remove();
                 });
 
         // END OF CSV LOAD        
@@ -200,7 +267,7 @@ function init(){
 TODO:
 - Match Countries name and hover to display data
 - Choropleths
-- Display scale to show color (and its data) ??
+- Display scale to show color (and its data) ?? // scale must be recounted
 - SLIDERS for each years
 */
 

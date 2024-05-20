@@ -1,6 +1,13 @@
 /* Popup container - can be anything you want */
-#chart{
-  z-index: 0;
+#tooltip {
+  position: absolute;
+  visibility: hidden;
+  background-color: white;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  pointer-events: none;
 }
 
 .popup {
