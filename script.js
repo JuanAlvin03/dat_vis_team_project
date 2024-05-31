@@ -34,7 +34,7 @@ function init(){
         console.log(world);
 
         var healthData = [];
-        var data2015 = [];
+        var yearlyData = [];
         // 50 Country data from CSV
         // 336 field from csv matches the name
         // supposed to be 380
@@ -50,6 +50,8 @@ function init(){
         // LOAD HEALTH EXPENDITURE DATA CSV
         d3.csv("data.csv", function(data){
             
+            var selectedYear = "2015";
+
             /*
             color.domain([
                 d3.min(data, function(d) { return d.value; }),  
@@ -70,9 +72,9 @@ function init(){
                 {
                     if(data[i].Country == world.objects.countries.geometries[j].properties.name)
                     {
-                        if(data[i].Year == "2015"){
+                        if(data[i].Year == selectedYear){
                             var temp = {country:world.objects.countries.geometries[j].properties.name, year:data[i].Year, value:data[i].Value};
-                            data2015.push(temp);
+                            yearlyData.push(temp);
                         }
                         var temp = {country:world.objects.countries.geometries[j].properties.name, year:data[i].Year, value:data[i].Value};
                         healthData.push(temp);
@@ -80,9 +82,9 @@ function init(){
 
                     if(data[i].Country === "Türkiye" && world.objects.countries.geometries[j].properties.name === "Turkey")
                     {
-                        if(data[i].Year == "2015"){
+                        if(data[i].Year == selectedYear){
                             var temp = {country:world.objects.countries.geometries[j].properties.name, year:data[i].Year, value:data[i].Value};
-                            data2015.push(temp);
+                            yearlyData.push(temp);
                         }
                         var temp = {country:world.objects.countries.geometries[j].properties.name, year:data[i].Year, value:data[i].Value};
                         healthData.push(temp);
@@ -90,9 +92,9 @@ function init(){
 
                     if(data[i].Country === "Korea" && world.objects.countries.geometries[j].properties.name === "South Korea")
                     {
-                        if(data[i].Year == "2015"){
+                        if(data[i].Year == selectedYear){
                             var temp = {country:world.objects.countries.geometries[j].properties.name, year:data[i].Year, value:data[i].Value};
-                            data2015.push(temp);
+                            yearlyData.push(temp);
                         }
                         var temp = {country:world.objects.countries.geometries[j].properties.name, year:data[i].Year, value:data[i].Value};
                         healthData.push(temp);
@@ -100,9 +102,9 @@ function init(){
 
                     if(data[i].Country === "United States" && world.objects.countries.geometries[j].properties.name === "United States of America")
                     {
-                        if(data[i].Year == "2015"){
+                        if(data[i].Year == selectedYear){
                             var temp = {country:world.objects.countries.geometries[j].properties.name, year:data[i].Year, value:data[i].Value};
-                            data2015.push(temp);
+                            yearlyData.push(temp);
                         }
                         var temp = {country:world.objects.countries.geometries[j].properties.name, year:data[i].Year, value:data[i].Value};
                         healthData.push(temp);
@@ -110,9 +112,9 @@ function init(){
 
                     if(data[i].Country === "Slovak Republic" && world.objects.countries.geometries[j].properties.name === "Slovakia")
                     {
-                        if(data[i].Year == "2015"){
+                        if(data[i].Year == selectedYear){
                             var temp = {country:world.objects.countries.geometries[j].properties.name, year:data[i].Year, value:data[i].Value};
-                            data2015.push(temp);
+                            yearlyData.push(temp);
                         }
                         var temp = {country:world.objects.countries.geometries[j].properties.name, year:data[i].Year, value:data[i].Value};
                         healthData.push(temp);
@@ -120,15 +122,17 @@ function init(){
 
                     if(data[i].Country === "China (People's Republic of)" && world.objects.countries.geometries[j].properties.name === "China")
                     {
-                        if(data[i].Year == "2015"){
+                        if(data[i].Year == selectedYear){
                             var temp = {country:world.objects.countries.geometries[j].properties.name, year:data[i].Year, value:data[i].Value};
-                            data2015.push(temp);
+                            yearlyData.push(temp);
                         }
                         var temp = {country:world.objects.countries.geometries[j].properties.name, year:data[i].Year, value:data[i].Value};
                         healthData.push(temp);
                     }
                 }
             }
+
+            
 
             //console.log(healthData);
             
@@ -145,9 +149,9 @@ function init(){
             //GET 2015 DAT ONLY
 
             function findDataByCountryName(name){
-                for(i = 0; i<data2015.length; i++){
-                    if(data2015[i].country == name){
-                        return data2015[i].value;
+                for(i = 0; i < yearlyData.length; i++){
+                    if(yearlyData[i].country == name){
+                        return yearlyData[i].value;
                     }
                 }
                 return "No Data";
@@ -215,9 +219,9 @@ function init(){
                     d3.select(this)
                         .attr("fill", "orange")
 
-                    var value = findDataByCountryName(d.properties.name);
+                    var value = findDataByCountryName(d.properties.name, selectedYear);
                     tooltip.style("visibility", "visible")
-                           .html("<strong>Country:</strong> " + d.properties.name + "<br><strong>Year:</strong> 2015<br><strong>Value:</strong> " + value);
+                           .html("<strong>Country:</strong> " + d.properties.name + "<br><strong>Year:</strong> " + selectedYear + "<br><strong>Value:</strong> " + value);
                     
                     /*
                     var hoveredDiv = d3.select(this).select("div");
@@ -237,8 +241,11 @@ function init(){
 
                 })
                 .on("mousemove", function(event) {
-                    tooltip.style("top", (event.pageY - 10) + "px")
-                           .style("left", (event.pageX + 10) + "px");
+                    tooltip.style("top", (event.clientX - 10) + "px")
+                            .style("left", (event.clientY + 10) + "px");
+                    
+                    //tooltip.style("top", (event.pageY - 10) + "px")
+                           //.style("left", (event.pageX + 10) + "px");
                 })
                 .on("mouseout", function () { // effect when mouse move, not over anymore
                     //change bar to original color
@@ -257,6 +264,115 @@ function init(){
                     //d3.select("#tooltip").remove();
                 });
 
+            function updateChart(year){
+                selectedYear = year; // get the selected year
+                yearlyData = []; // empty the array of yearly data, to be replaced with selected year data
+
+                /*
+                color.domain([
+                    d3.min(data, function(d) { return d.value; }),  
+                    d3.max(data, function(d) { return d.value; })
+                ])
+                */
+
+                for (let i = 0; i < data.length; i++) 
+                {
+                    for (let j = 0; j < world.objects.countries.geometries.length; j++) 
+                    {
+                        if(data[i].Country == world.objects.countries.geometries[j].properties.name)
+                        {
+                            if(data[i].Year == selectedYear){
+                                var temp = {country:world.objects.countries.geometries[j].properties.name, year:data[i].Year, value:data[i].Value};
+                                yearlyData.push(temp);
+                            }
+                        }
+
+                        if(data[i].Country === "Türkiye" && world.objects.countries.geometries[j].properties.name === "Turkey")
+                        {
+                            if(data[i].Year == selectedYear){
+                                var temp = {country:world.objects.countries.geometries[j].properties.name, year:data[i].Year, value:data[i].Value};
+                                yearlyData.push(temp);
+                            }
+                        }
+
+                        if(data[i].Country === "Korea" && world.objects.countries.geometries[j].properties.name === "South Korea")
+                        {
+                            if(data[i].Year == selectedYear){
+                                var temp = {country:world.objects.countries.geometries[j].properties.name, year:data[i].Year, value:data[i].Value};
+                                yearlyData.push(temp);
+                            }
+                        }
+
+                        if(data[i].Country === "United States" && world.objects.countries.geometries[j].properties.name === "United States of America")
+                        {
+                            if(data[i].Year == selectedYear){
+                                var temp = {country:world.objects.countries.geometries[j].properties.name, year:data[i].Year, value:data[i].Value};
+                                yearlyData.push(temp);
+                            }
+                        }
+
+                        if(data[i].Country === "Slovak Republic" && world.objects.countries.geometries[j].properties.name === "Slovakia")
+                        {
+                            if(data[i].Year == selectedYear){
+                                var temp = {country:world.objects.countries.geometries[j].properties.name, year:data[i].Year, value:data[i].Value};
+                                yearlyData.push(temp);
+                            }
+                        }
+
+                        if(data[i].Country === "China (People's Republic of)" && world.objects.countries.geometries[j].properties.name === "China")
+                        {
+                            if(data[i].Year == selectedYear){
+                                var temp = {country:world.objects.countries.geometries[j].properties.name, year:data[i].Year, value:data[i].Value};
+                                yearlyData.push(temp);
+                            }
+                        }
+                    }
+                }
+
+                // CHECK GEOJSON LOAD ERROR
+                if (error) throw error;
+
+                var tooltip = d3.select("#tooltip");
+
+                // GEOJSON LOAD SUCCESS
+                svg.selectAll("path")
+                    .data(topojson.feature(world,world.objects.countries).features)
+                    .enter()
+                    .append("path")
+                    .attr("d", path)
+                    .attr("fill", "grey")
+                    .on("mouseover", function(d) { // effect when mouse over
+                        // change path color to orange
+
+                        d3.select(this)
+                            .attr("fill", "orange")
+
+                        var value = findDataByCountryName(d.properties.name, selectedYear);
+                        tooltip.style("visibility", "visible")
+                               .html("<strong>Country:</strong> " + d.properties.name + "<br><strong>Year:</strong> " + selectedYear + "<br><strong>Value:</strong> " + value);
+                    })
+                    .on("mousemove", function(event) {
+                        tooltip.style("top", (event.clientX - 10) + "px")
+                               .style("left", (event.clientY + 10) + "px");
+                        
+                        //tooltip.style("top", (event.pageY - 10) + "px")
+                               //.style("left", (event.pageX + 10) + "px");
+                    })
+                    .on("mouseout", function () { // effect when mouse move, not over anymore
+                        //change bar to original color
+                        d3.select(this) 
+                            .attr("fill", "grey"); 
+
+                        tooltip.style("visibility", "hidden");
+                    });
+            }
+
+            // Get slider value change
+            d3.select("#mySlider").on("change", function(d){
+                selectedValue = this.value
+                updateChart(selectedValue)
+            })
+            
         // END OF CSV LOAD        
         });
     // END OF JSON LOAD
@@ -265,10 +381,12 @@ function init(){
 
 /*
 TODO:
-- Match Countries name and hover to display data
+
+- try to get pop up to be close to cursor???
 - Choropleths
 - Display scale to show color (and its data) ?? // scale must be recounted
-- SLIDERS for each years
+
+
 */
 
 window.onload = init;
