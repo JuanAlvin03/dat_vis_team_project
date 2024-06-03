@@ -1,6 +1,7 @@
 function init(){
+
     /*CANVAS WIDTH AND HEIGHT*/
-    var w = "150%";
+    var w = "100%";
     var h = 600;
 
     //Get map 
@@ -174,7 +175,7 @@ function init(){
 
                     var value = findDataByCountryName(d.properties.name);
                     tooltip.style("visibility", "visible")
-                           .html("<strong>Country:</strong> " + d.properties.name + "<br><strong>Year:</strong> " + selectedYear + "<br><strong>Value:</strong> " + value); 
+                           .html("<strong>Country:</strong> " + d.properties.name + "<br><strong>Year:</strong> " + selectedYear + "<br><strong>Value:</strong> " + value + "% of GDP"); 
 
                 })
                 .on("mousemove", function(event) {
@@ -290,7 +291,7 @@ function init(){
 
                         var value = findDataByCountryName(d.properties.name);
                         tooltip.style("visibility", "visible")
-                               .html("<strong>Country:</strong> " + d.properties.name + "<br><strong>Year:</strong> " + selectedYear + "<br><strong>Value:</strong> " + value);
+                               .html("<strong>Country:</strong> " + d.properties.name + "<br><strong>Year:</strong> " + selectedYear + "<br><strong>Value:</strong> " + value + "% of GDP");
                     })
                     .on("mousemove", function(event) {
                         tooltip.style("top", (event.clientX - 10) + "px")
@@ -327,6 +328,8 @@ function init(){
         });
     // END OF JSON LOAD
     });
+
+
 }
 
 window.onload = init;

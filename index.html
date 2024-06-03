@@ -14,24 +14,29 @@
     <!--<script src="https://d3js.org/d3.v7.min.js"></script>-->
 
     <script src="https://unpkg.com/topojson-client@3"></script>
-
+    <script src="script.js"></script>
 </head>
 <body>
     
-    <h1>Title</h1>
+    <h1>Yearly Health Expenditure in % of Gross Domestic Product</h1>
 
     <!-- Add a slider -->
-    <input type="range" name="mySlider" id="mySlider" min="2015" max="2022" value="2015">
+    <!--<input type="range" name="mySlider" id="mySlider" min="2015" max="2022" value="2015">-->
+    <div class="div">
+        <span id="rangeValue">2015</span><br>
+        <Input class="range" type="range" name="mySlider" id="mySlider" min="2015" max="2022" value="2015" onchange="rangeSlide(this.value)" onmousemove="rangeSlide(this.value)">
+    </div>
 
-    <p id="chart">
-       
-    </p>
+    <p id="chart"></p>
 
-    <div id="tooltip" style="position:absolute; background-color: white; padding: 10px; border: 1px solid #ccc; border-radius: 4px;"></div>
+    <div id="tooltip" style="position:relative; background-color: white; padding: 10px; border: 1px solid #ccc; border-radius: 4px;"></div>
 
-    <footer>Footer</footer>
-    
-    <script src="script.js"></script>
-   
+    <footer>COS30045 2024 Semester 1 Team CL05_T01 (Juan Alvin S. S., Jia Min Tiong)</footer>
+
+    <script>
+    function rangeSlide(value) {
+        document.getElementById('rangeValue').innerHTML = value;
+    }
+    </script>
 </body>
 </html>
