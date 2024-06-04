@@ -32,8 +32,6 @@ function init(){
     // https://gist.github.com/piwodlaiwo/3734a1357696dcff203a94012646e932
 
     d3.json("countries-110m.json", function(error, world) {
-        //console.log(world);
-
         var healthData = [];
         var yearlyData = [];
         // 50 Country data from CSV
@@ -146,8 +144,6 @@ function init(){
                 return "No Data";
             }
 
-            // https://d3-graph-gallery.com/graph/density_slider.html
-
             var tooltip = d3.select("#tooltip");
 
             // GEOJSON LOAD SUCCESS
@@ -192,12 +188,6 @@ function init(){
                 .on("mousemove", function(event) {
                     tooltip.style("top", "550px")
                             .style("left", "20px");
-
-                    /*
-                    tooltip.style("top", (event.clientX - 10) + "px")
-                            .style("left", (event.clientY + 10) + "px");
-                    */
-
                 })
                 .on("mouseout", function () { // effect when mouse move, not over anymore
                     //change bar to original color
@@ -284,10 +274,6 @@ function init(){
                 // GEOJSON LOAD SUCCESS
                 svg.selectAll("path")
                     .data(topojson.feature(world,world.objects.countries).features)
-                    //.enter()
-                    //.append("path")
-                    //.attr("d", path)
-                    //.attr("fill", "grey")
                     .attr("fill", function(d) {
                         var value = findDataByCountryName(d.properties.name);
                     
