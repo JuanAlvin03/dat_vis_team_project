@@ -28,12 +28,11 @@ function init(){
                 .append("svg")
                 .attr("width", w)
                 .attr("height", h)
-                .style("background-color", "blue")
 
     // https://gist.github.com/piwodlaiwo/3734a1357696dcff203a94012646e932
 
     d3.json("countries-110m.json", function(error, world) {
-        console.log(world);
+        //console.log(world);
 
         var healthData = [];
         var yearlyData = [];
@@ -123,6 +122,9 @@ function init(){
                 // NEED TO BE PARSED TO FLOAT SO THAT IT CAN BE used in d3.min and d3.max
                 onlyValue.push(parseFloat(data[i].Value));
             }
+
+            console.log(d3.min(onlyValue));
+            console.log(d3.max(onlyValue));
     
             color.domain([
                 d3.min(onlyValue),  
@@ -160,9 +162,8 @@ function init(){
                     var value = findDataByCountryName(d.properties.name);
                 
                     if(value === "No Data"){  
-                        return "#ccc" // if there is no value
+                        return "#bbb" // if there is no value
                     } else {
-                        console.log(value);
                         return color(value); // use the color based on the data
                     }
                 })
@@ -174,16 +175,29 @@ function init(){
                         .attr("fill", "orange")
 
                     var value = findDataByCountryName(d.properties.name);
-                    tooltip.style("visibility", "visible")
-                           .html("<strong>Country:</strong> " + d.properties.name + "<br><strong>Year:</strong> " + selectedYear + "<br><strong>Value:</strong> " + value + "% of GDP"); 
+                    if(value === "No Data"){  
+                        tooltip.style("visibility", "visible")
+                                .html("<strong>Country:</strong> " + d.properties.name + "<br><strong>Year:</strong> " + selectedYear + "<br><strong>Value:</strong> " + value);
+                    } else {
+                        tooltip.style("visibility", "visible")
+                                .html("<strong>Country:</strong> " + d.properties.name + "<br><strong>Year:</strong> " + selectedYear + "<br><strong>Value:</strong> " + value + "% of GDP");
+                    }
 
+                    svg.selectAll("path")
+                        .style("opacity", 0.5)
+
+                    d3.select(this)
+                        .style("opacity", 1)
                 })
                 .on("mousemove", function(event) {
+                    tooltip.style("top", "550px")
+                            .style("left", "20px");
+
+                    /*
                     tooltip.style("top", (event.clientX - 10) + "px")
                             .style("left", (event.clientY + 10) + "px");
-                    
-                    //tooltip.style("top", (event.pageY - 10) + "px")
-                           //.style("left", (event.pageX + 10) + "px");
+                    */
+
                 })
                 .on("mouseout", function () { // effect when mouse move, not over anymore
                     //change bar to original color
@@ -192,12 +206,14 @@ function init(){
                             var value = findDataByCountryName(d.properties.name);
                         
                             if(value === "No Data"){  
-                                return "#ccc" // if there is no value
+                                return "#bbb" // if there is no value
                             } else {
-                                console.log(value);
                                 return color(value); // use the color based on the data
                             }
                         })
+
+                    svg.selectAll("path")
+                        .style("opacity", 1)
 
                     tooltip.style("visibility", "hidden");
                 });
@@ -276,29 +292,37 @@ function init(){
                         var value = findDataByCountryName(d.properties.name);
                     
                         if(value === "No Data"){  
-                            return "#ccc" // if there is no value
+                            return "#bbb" // if there is no value
                         } else {
-                            console.log(value);
                             return color(value); // use the color based on the data
                         }
                     })
 
-                    .on("mouseover", function(d) { // effect when mouse over
+                    .on("mouseover", function(d, event) { // effect when mouse over
                         // change path color to orange
 
                         d3.select(this)
                             .attr("fill", "orange")
 
                         var value = findDataByCountryName(d.properties.name);
-                        tooltip.style("visibility", "visible")
-                               .html("<strong>Country:</strong> " + d.properties.name + "<br><strong>Year:</strong> " + selectedYear + "<br><strong>Value:</strong> " + value + "% of GDP");
+
+                        if(value === "No Data"){  
+                            tooltip.style("visibility", "visible")
+                                    .html("<strong>Country:</strong> " + d.properties.name + "<br><strong>Year:</strong> " + selectedYear + "<br><strong>Value:</strong> " + value);
+                        } else {
+                            tooltip.style("visibility", "visible")
+                                    .html("<strong>Country:</strong> " + d.properties.name + "<br><strong>Year:</strong> " + selectedYear + "<br><strong>Value:</strong> " + value + "% of GDP");
+                        }
+
+                        svg.selectAll("path")
+                            .style("opacity", 0.5)
+
+                        d3.select(this)
+                            .style("opacity", 1)
                     })
                     .on("mousemove", function(event) {
-                        tooltip.style("top", (event.clientX - 10) + "px")
-                               .style("left", (event.clientY + 10) + "px");
-                        
-                        //tooltip.style("top", (event.pageY - 10) + "px")
-                               //.style("left", (event.pageX + 10) + "px");
+                        tooltip.style("top", "550px")
+                            .style("left", "20px");
                     })
                     .on("mouseout", function () { // effect when mouse move, not over anymore
                         //change bar to original color
@@ -307,12 +331,14 @@ function init(){
                                 var value = findDataByCountryName(d.properties.name);
                             
                                 if(value === "No Data"){  
-                                    return "#ccc" // if there is no value
+                                    return "#bbb" // if there is no value
                                 } else {
-                                    console.log(value);
                                     return color(value); // use the color based on the data
                                 }
                             }) 
+                        
+                        svg.selectAll("path")
+                            .style("opacity", 1)
 
                         tooltip.style("visibility", "hidden");
                     });

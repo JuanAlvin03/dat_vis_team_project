@@ -10,6 +10,7 @@
     <title>Health Expenditure</title>
 
     <link rel="stylesheet" href="style.css">
+
     <script src="https://unpkg.com/d3@4"></script>
     <!--<script src="https://d3js.org/d3.v7.min.js"></script>-->
 
@@ -23,18 +24,30 @@
     <!-- Add a slider -->
     <!--<input type="range" name="mySlider" id="mySlider" min="2015" max="2022" value="2015">-->
     <div class="div">
+
         <span id="rangeValue">2015</span><br>
-        <Input class="range" type="range" name="mySlider" id="mySlider" min="2015" max="2022" value="2015" onchange="rangeSlide(this.value)" onmousemove="rangeSlide(this.value)">
+
+        <div class="actualSlider">
+            2015 <Input class="range" type="range" name="mySlider" id="mySlider" min="2015" max="2022" value="2015" onchange="rangeSlide(this.value)" onmousemove="rangeSlide(this.value)"> 2022
+        </div>
     </div>
 
     <p id="chart"></p>
 
-    <p id="legend"></p>
-    <div id="tooltip" style="position:relative; background-color: white; padding: 10px; border: 1px solid #ccc; border-radius: 4px;"></div>
+    <p id="legend">
+        <div id="legend">
+            <span>Legend</span>
+            <img src="legend.png" alt="Legend Image">
+        </div>
+    </p>
+    <div id="tooltip" style="position:absolute; background-color: white; padding: 10px; border: 1px solid #ccc; border-radius: 4px;"></div>
 
-    <footer>COS30045 2024 Semester 1 Team CL05_T01 (Juan Alvin S. S., Jia Min Tiong)</footer>
+    <footer>COS30045 2024 Semester 1<br>Team CL05_T01<br>Juan Alvin & Jia Min Tiong</footer>
 
     <script>
+
+    
+    
     function rangeSlide(value) {
         document.getElementById('rangeValue').innerHTML = value;
     }
